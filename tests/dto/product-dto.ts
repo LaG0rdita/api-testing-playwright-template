@@ -1,11 +1,9 @@
 export class ProductDto {
-
   // let's define fields
-  name: string;
-  category: string;
-  price: number;
+  name: string
+  category: string
+  price: number
   quantity: number
-
 
   constructor(name: string, category: string, price: number, quantity: number) {
     this.name = name
@@ -13,9 +11,7 @@ export class ProductDto {
     this.price = price
     this.quantity = quantity
   }
-
 }
-
 
 /*
 name: 'Kiwi',
