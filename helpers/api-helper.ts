@@ -5,9 +5,11 @@ import { StatusCodes } from 'http-status-codes'
 import { expect } from '@playwright/test'
 
 export async function fetchJwt(request: APIRequestContext, login: Login): Promise<string> {
+  // send request POST /login
   const authResponse = await request.post(baseUrl + loginEndpoint, {
     data: login,
   })
+  // check response and extract tokens
   if (authResponse.status() !== StatusCodes.OK) {
     throw new Error(`Authorization failed. Status: ${authResponse.status()}`)
   }
@@ -17,12 +19,12 @@ export async function fetchJwt(request: APIRequestContext, login: Login): Promis
 export async function createOrder(request: APIRequestContext, jwt: string): Promise<number> {
   const response = await request.post(baseUrl + ordersEndpoint, {
     data: {
-      "status": "OPEN",
-      "courierId": 0,
-      "customerName": "vladimir",
-      "customerPhone": "55445566",
-      "comment": "hello",
-      "id": 0
+      status: 'OPEN',
+      courierId: 0,
+      customerName: 'vladimir',
+      customerPhone: '55445566',
+      comment: 'hello',
+      id: 0,
     },
     headers: {
       Authorization: `Bearer ${jwt}`,
@@ -33,3 +35,14 @@ export async function createOrder(request: APIRequestContext, jwt: string): Prom
   return responseBody.id
 }
 
+export async function getOrderById(request: APIRequestContext, jwt: string, orderId: number): Promise<number> {
+  const response = await request.get(baseUrl + ordersEndpoint + '/' + orderId, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+  expect(response.status()).toBe(StatusCodes.OK)
+  const responseBody = await response.json()
+  console.log(responseBody)
+  return responseBody.id
+}

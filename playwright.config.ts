@@ -1,8 +1,9 @@
 import { defineConfig } from '@playwright/test';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config()
 
+//dotenv.config({ path: './tests/.env' })
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
