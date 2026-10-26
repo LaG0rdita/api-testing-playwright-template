@@ -16,16 +16,13 @@ test('get account info with correct id should receive code 200', async ({ reques
   expect(statusCode).toBe(StatusCodes.OK)
 })
 
-
-
-
 test('create account with correct payload should receive code 201', async ({ request }) => {
   // Build and send a GET request to the server
   // We have to specify authorisation headers as X-API-KEY type
   const response = await request.post('https://shop.tl-academy.ee/api/accounts', {
     headers: { 'X-API-KEY': 'my-api-key' },
     //let's define payload
-    data: new AccountDto('Mark', 'USD')
+    data: new AccountDto('Mark', 'USD'),
   })
 
   const responseBody = await response.json()
@@ -35,7 +32,9 @@ test('create account with correct payload should receive code 201', async ({ req
   expect(statusCode).toBe(StatusCodes.CREATED)
 })
 
-test('create account with correct payload AND show the Account ID should receive code 201', async ({ request }) => {
+test('create account with correct payload AND show the Account ID should receive code 201', async ({
+  request,
+}) => {
   // Build and send a GET request to the server
   // We have to specify authorisation headers as X-API-KEY type
   const response = await request.post('https://shop.tl-academy.ee/api/accounts', {
@@ -58,8 +57,7 @@ test('create account with correct payload AND show the Account ID should receive
     {
       headers: { 'X-API-KEY': 'my-api-key' },
       // let's define payload
-      data: {amount: 25.5}
-      ,
+      data: { amount: 25.5 },
     },
   )
 
@@ -67,8 +65,4 @@ test('create account with correct payload AND show the Account ID should receive
   const depositStatus = responseDeposit.status()
   console.log('response body:', responseBodyDeposit)
   console.log('code:', depositStatus)
-
 })
-
-
-

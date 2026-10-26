@@ -63,7 +63,4 @@ test.describe('Authorization flow', () => {
     expect(response.status()).toBe(401)
     console.log('Negative test - invalid authorisation token was rejected')
   })
-
-
-
 })
