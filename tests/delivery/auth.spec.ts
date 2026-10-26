@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { Login } from '../../dto/login-dto'
-import { createOrder, fetchJwt } from '../../helpers/api-helper'
+import { createOrder, fetchJwt, getOrderById } from '../../helpers/api-helper'
 
 let loginDto: Login
 export const baseUrl = 'https://backend.tallinn-learning.ee'
@@ -28,6 +28,13 @@ test.describe('Authorization flow', () => {
     console.log(orderId)
   })
 
+  test('should create order and validate order by id', async ({ request }) => {
+    const token = await fetchJwt(request, loginDto)
+    const orderId = await createOrder(request, token)
+
+    await getOrderById(request, token, orderId)
+  })
+
   test('should get orders with authorization token', async ({ request }) => {
     const token = await fetchJwt(request, loginDto)
 
@@ -43,4 +50,20 @@ test.describe('Authorization flow', () => {
     console.log('Orders:', JSON.stringify(orders, null, 2))
     expect(orders).toBeTruthy()
   })
+
+  test('should not get order id with invalid authorisation token', async ({ request }) => {
+    const token = await fetchJwt(request, loginDto)
+    const orderId = await createOrder(request, token)
+
+    const response = await request.get(baseUrl + ordersEndpoint + '/' + orderId, {
+      headers: {
+        Authorization: 'Bearer invalid authorisation token',
+      },
+    })
+    expect(response.status()).toBe(401)
+    console.log('Negative test - invalid authorisation token was rejected')
+  })
+
+
+
 })
